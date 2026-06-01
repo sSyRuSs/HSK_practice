@@ -129,34 +129,13 @@
   }
 }
 
-/* ── Flashcard 3D Flip ─────────────────────────────── */
-.flashcard-scene {
-  perspective: 1200px;
+/* ── Flashcard flip animation ───────────────────────── */
+@keyframes fc-flip-in {
+  from { opacity: 0; transform: rotateX(12deg) scale(0.97); }
+  to   { opacity: 1; transform: rotateX(0deg)  scale(1); }
 }
-
-.flashcard-card {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  transform-style: preserve-3d;
-  transition: transform 0.55s cubic-bezier(0.4, 0, 0.2, 1);
-  cursor: pointer;
-}
-
-.flashcard-card.flipped {
-  transform: rotateY(180deg);
-}
-
-.flashcard-face {
-  position: absolute;
-  inset: 0;
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-  border-radius: var(--radius-lg);
-}
-
-.flashcard-back {
-  transform: rotateY(180deg);
+.flashcard-flip {
+  animation: fc-flip-in 0.22s ease-out;
 }
 
 /* ── Chinese character sizing ─────────────────────── */

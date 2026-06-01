@@ -3,6 +3,7 @@ import type { WordProgress } from "./srs";
 const STORAGE_VERSION = 2;
 const PROGRESS_KEY = `hsk-progress-v${STORAGE_VERSION}`;
 const STREAK_KEY = `hsk-streak-v${STORAGE_VERSION}`;
+const BOOKMARKS_KEY = `hsk-bookmarks-v${STORAGE_VERSION}`;
 
 export interface StreakData {
   currentStreak: number;
@@ -99,13 +100,32 @@ export function updateStreak(): StreakData {
   return newStreak;
 }
 
+// ── Bookmarks ─────────────────────────────────────────────────
+
+export function loadBookmarks(): Set<string> {
+  if (typeof window === "undefined") return new Set();
+  try {
+    const raw = localStorage.getItem(BOOKMARKS_KEY);
+    if (!raw) return new Set();
+    return new Set(JSON.parse(raw) as string[]);
+  } catch {
+    return new Set();
+  }
+}
+
+export function saveBookmarks(bookmarks: Set<string>): void {
+  if (typeof window === "undefined") return;
+  localStorage.setItem(BOOKMARKS_KEY, JSON.stringify([...bookmarks]));
+}
+
 // ── Export / Import ───────────────────────────────────────────
 
 export function exportData(): string {
   const progress = loadProgress();
   const streak = loadStreak();
+  const bookmarks = [...loadBookmarks()];
   return JSON.stringify(
-    { version: STORAGE_VERSION, progress, streak, exportedAt: new Date().toISOString() },
+    { version: STORAGE_VERSION, progress, streak, bookmarks, exportedAt: new Date().toISOString() },
     null,
     2
   );
@@ -117,12 +137,14 @@ export function importData(json: string): { success: boolean; error?: string } {
       version?: number;
       progress: Record<string, WordProgress>;
       streak: StreakData;
+      bookmarks?: string[];
     };
     if (!data.progress || typeof data.progress !== "object") {
       return { success: false, error: "Invalid data format" };
     }
     saveProgress(data.progress);
     if (data.streak) saveStreak(data.streak);
+    if (data.bookmarks) saveBookmarks(new Set(data.bookmarks));
     return { success: true };
   } catch {
     return { success: false, error: "Failed to parse JSON" };

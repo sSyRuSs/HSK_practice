@@ -9,6 +9,8 @@ import {
   loadStreak,
   saveStreak,
   updateStreak,
+  loadBookmarks,
+  saveBookmarks,
   type StreakData,
 } from "@/lib/storage";
 import { hskVocabulary } from "@/data/hsk-vocabulary";
@@ -39,12 +41,14 @@ export function useProgress() {
     lastStudyDate: null,
     totalDaysStudied: 0,
   });
+  const [bookmarks, setBookmarks] = useState<Set<string>>(new Set());
   const [hydrated, setHydrated] = useState(false);
 
   // Load from localStorage on mount (client only)
   useEffect(() => {
     setProgress(loadProgress());
     setStreak(loadStreak());
+    setBookmarks(loadBookmarks());
     setHydrated(true);
   }, []);
 
@@ -52,6 +56,11 @@ export function useProgress() {
   useEffect(() => {
     if (hydrated) saveProgress(progress);
   }, [progress, hydrated]);
+
+  // Persist bookmarks
+  useEffect(() => {
+    if (hydrated) saveBookmarks(bookmarks);
+  }, [bookmarks, hydrated]);
 
   const getWordProgress = useCallback(
     (wordId: string): WordProgress => {
@@ -154,10 +163,25 @@ export function useProgress() {
     [progress]
   );
 
+  const toggleBookmark = useCallback((wordId: string) => {
+    setBookmarks((prev) => {
+      const next = new Set(prev);
+      if (next.has(wordId)) next.delete(wordId);
+      else next.add(wordId);
+      return next;
+    });
+  }, []);
+
+  const isBookmarked = useCallback(
+    (wordId: string) => bookmarks.has(wordId),
+    [bookmarks]
+  );
+
   return {
     progress,
     streak,
     hydrated,
+    bookmarks,
     getWordProgress,
     rateWord,
     markKnown,
@@ -166,5 +190,7 @@ export function useProgress() {
     getStats,
     getLevelStats,
     getDueWords,
+    toggleBookmark,
+    isBookmarked,
   };
 }
