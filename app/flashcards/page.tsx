@@ -21,6 +21,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { PronunciationButton } from "@/components/pronunciation-button";
 import { useProgress } from "@/hooks/use-progress";
 import {
   getWordsByLevel,
@@ -348,6 +349,12 @@ function FlashcardsInner() {
 
           {/* Side indicator top-right */}
           <div className="absolute top-4 right-4 flex items-center gap-2">
+            <PronunciationButton
+              text={currentWord.simplified}
+              size="icon"
+              variant="ghost"
+              className="h-8 w-8"
+            />
             <button
               className="text-muted-foreground hover:text-red-500 transition-colors focus:outline-none"
               onClick={(e) => { e.stopPropagation(); toggleBookmark(currentWord.id); }}
