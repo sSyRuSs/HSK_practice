@@ -13,6 +13,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { PronunciationButton } from "@/components/pronunciation-button";
 import { useProgress } from "@/hooks/use-progress";
 import {
   hskVocabulary,
@@ -323,6 +324,14 @@ function WordDetailDialog({
           <p className="text-7xl font-bold" style={{ fontFamily: "serif" }}>
             {word.simplified}
           </p>
+          <div className="flex justify-center">
+            <PronunciationButton
+              text={word.simplified}
+              size="default"
+              variant="outline"
+              showLabel={true}
+            />
+          </div>
           <p className="text-xl text-muted-foreground">{word.pinyin}</p>
           <p className="text-lg font-medium">{word.meaning}</p>
           <Badge variant="outline" className="text-xs">
