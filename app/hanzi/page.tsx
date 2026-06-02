@@ -330,17 +330,35 @@ function HanziPracticeInner() {
           </div>
 
           {/* Action buttons */}
-          <div className="grid grid-cols-2 gap-2">
-            <Button size="sm" variant="outline" onClick={handleAnimateChar}>
-              ▶️ Xem thứ tự nét
-            </Button>
-            {!quizStarted ? (
-              <Button size="sm" onClick={handleStartQuiz}>
-                ✍️ Bắt đầu viết
+          <div className="space-y-2">
+            <div className="grid grid-cols-2 gap-2">
+              <Button size="sm" variant="outline" onClick={handleAnimateChar}>
+                ▶️ Xem thứ tự nét
               </Button>
-            ) : (
-              <Button size="sm" variant="outline" onClick={handleShowHint}>
-                <Lightbulb className="h-4 w-4 mr-1" /> Gợi ý
+              {!quizStarted ? (
+                <Button size="sm" onClick={handleStartQuiz}>
+                  ✍️ Luyện viết
+                </Button>
+              ) : (
+                <Button size="sm" variant="outline" onClick={handleShowHint}>
+                  <Lightbulb className="h-4 w-4 mr-1" /> Gợi ý
+                </Button>
+              )}
+            </div>
+            {quizStarted && (
+              <Button
+                size="sm"
+                variant="secondary"
+                onClick={() => {
+                  if (writerInstance) {
+                    writerInstance.cancelQuiz();
+                  }
+                  setQuizStarted(false);
+                  setQuizResult(null);
+                }}
+                className="w-full"
+              >
+                🔄 Viết lại
               </Button>
             )}
           </div>
