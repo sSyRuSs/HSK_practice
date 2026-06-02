@@ -276,6 +276,7 @@ export default function QuizPage() {
               )}
             </button>
           );
+        })}
       </div>
 
       {/* Feedback + next */}
