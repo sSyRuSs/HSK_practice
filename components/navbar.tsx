@@ -10,6 +10,7 @@ import {
   Menu,
   X,
   PenLine,
+  PenTool,
 } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
@@ -20,6 +21,7 @@ const NAV_ITEMS = [
   { href: "/flashcards", label: "Flashcard", icon: CreditCard },
   { href: "/quiz", label: "Quiz", icon: Brain },
   { href: "/writing", label: "Luyện viết", icon: PenLine },
+  { href: "/hanzi", label: "Viết Hán", icon: PenTool },
   { href: "/progress", label: "Tiến trình", icon: BarChart2 },
 ];
 
