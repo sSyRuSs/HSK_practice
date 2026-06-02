@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { PronunciationButton } from "@/components/pronunciation-button";
 import { useProgress } from "@/hooks/use-progress";
 import { hskVocabulary, getWordsByLevel, LEVEL_NAMES } from "@/data/hsk-vocabulary";
 import type { VocabWord } from "@/data/hsk-vocabulary";
@@ -178,10 +179,16 @@ export default function QuizPage() {
                 .map(({ word }) => (
                   <div key={word.id} className="flex items-center gap-3 p-3 border rounded-lg bg-red-50 dark:bg-red-950/20">
                     <span className="hanzi-md font-bold">{word.simplified}</span>
-                    <div>
+                    <div className="flex-1">
                       <p className="text-sm font-medium">{word.pinyin}</p>
                       <p className="text-xs text-muted-foreground">{word.meaning}</p>
                     </div>
+                    <PronunciationButton
+                      text={word.simplified}
+                      size="icon"
+                      variant="ghost"
+                      className="h-8 w-8 shrink-0"
+                    />
                   </div>
                 ))}
             </div>
@@ -222,7 +229,16 @@ export default function QuizPage() {
         <CardContent className="pt-6 pb-6 text-center space-y-3">
           <Badge variant="outline">{getPromptLabel(currentQ!.mode)}</Badge>
           {currentQ!.mode === "hanzi-meaning" ? (
-            <p className="hanzi-xl font-bold">{getPrompt(currentQ!)}</p>
+            <>
+              <p className="hanzi-xl font-bold">{getPrompt(currentQ!)}</p>
+              <div className="flex justify-center pt-2">
+                <PronunciationButton
+                  text={currentQ!.word.simplified}
+                  size="sm"
+                  variant="ghost"
+                />
+              </div>
+            </>
           ) : currentQ!.mode === "pinyin-hanzi" ? (
             <p className="text-3xl font-semibold">{getPrompt(currentQ!)}</p>
           ) : (
@@ -273,7 +289,7 @@ export default function QuizPage() {
             ) : (
               <XCircle className="h-5 w-5 text-red-500 shrink-0" />
             )}
-            <div className="text-sm">
+            <div className="text-sm flex-1">
               <p className="font-medium">
                 {selected === currentQ!.correctIndex ? "Chính xác!" : "Sai rồi!"}
               </p>
@@ -281,6 +297,12 @@ export default function QuizPage() {
                 {currentQ!.word.simplified} — {currentQ!.word.pinyin} — {currentQ!.word.meaning}
               </p>
             </div>
+            <PronunciationButton
+              text={currentQ!.word.simplified}
+              size="icon"
+              variant="ghost"
+              className="h-8 w-8 shrink-0"
+            />
           </div>
           <Button className="w-full" onClick={handleNext}>
             {qIndex + 1 < quiz.length ? "Câu tiếp theo →" : "Xem kết quả 🏆"}
