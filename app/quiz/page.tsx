@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useMemo, useCallback } from "react";
-import { CheckCircle2, XCircle, RotateCcw, Trophy } from "lucide-react";
+import { useState, useCallback } from "react";
+import { CheckCircle2, XCircle, RotateCcw } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -252,7 +252,6 @@ export default function QuizPage() {
         {currentQ!.choices.map((choice, idx) => {
           const isCorrect = idx === currentQ!.correctIndex;
           const isSelected = selected === idx;
-          let variant: "outline" | "default" = "outline";
           let extraClass = "";
           if (isAnswered) {
             if (isCorrect) extraClass = "border-green-500 bg-green-50 dark:bg-green-950/30 text-green-700 dark:text-green-400";
@@ -277,7 +276,6 @@ export default function QuizPage() {
               )}
             </button>
           );
-        })}
       </div>
 
       {/* Feedback + next */}
